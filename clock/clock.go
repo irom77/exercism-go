@@ -18,26 +18,14 @@ func New(hour, minute int) Clock {
 	hrs := hour
 	mns := minute
 
-	if hour >= 24 {
-		hrs = hour - 24 * (hour/24)
+	time := (hour*60 + minute) % (60 * 24)
+	if time < 0 {
+		time += 60 * 24
 	}
-	if hour < 0 {
-		hrs = 24 - (24 * ( hour/24) - hour)
-	}
-	if minute >= 60 {
-		hrs = hrs + (minute/60)
-		if hrs >= 24 {
-			hrs = hrs - 24 * (hrs/24)
-		}
-		mns = minute - 60 * (minute/60)
-	}
-	if minute < 0 {
-		mns = (60 - (60 * ( minute/60) - minute))
-		hrs = hour + (60/minute)
-		if minute < -60 {
-			hrs = 24 + (minute/60)
-		}
-	}
+
+	hrs = time / 60
+	mns = time % 60
+
 	return Clock{h:hrs,m:mns}
 }
 
